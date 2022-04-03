@@ -1,5 +1,6 @@
 import image from "../images/image.jpg";
 import PopupWithForm from "./PopupWithForm.js";
+import ImagePopup from "./ImagePopup.js";
 
 export default function Main() {
   function handleEditAvatarClick() {
@@ -140,14 +141,7 @@ export default function Main() {
         <span className="url-input-error popup__input-error"></span>
         <input className="popup__button" type="submit" value="Save" />
       </PopupWithForm>
-
-      <section className="popup popup_type_image">
-        <div className="popup__container-card">
-          <button type="button" className="popup__close"></button>
-          <img src=" " alt=" " className="popup__card-image" />
-          <p className="popup__name"></p>
-        </div>
-      </section>
+      <ImagePopup />
     </main>
   );
 }
