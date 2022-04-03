@@ -1,12 +1,20 @@
 export default function PopupWithForm(props) {
   return (
-    <section className={`popup popup_type_${props.name}`}>
+    <section
+      className={`popup popup_type_${props.name} ${
+        props.isOpen ? "popup_opened" : ""
+      }`}
+    >
       <div
         className={`popup__container ${
           props.modifier && `popup__container_${props.modifier}`
         }`}
       >
-        <button type="button" className="popup__close"></button>
+        <button
+          type="button"
+          className="popup__close"
+          onClick={props.handleCloseClick}
+        ></button>
         <h3 className="popup__title">{props.title}</h3>
         <form
           noValidate

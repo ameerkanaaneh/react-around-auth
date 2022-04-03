@@ -2,26 +2,14 @@ import image from "../images/image.jpg";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 
-export default function Main() {
-  function handleEditAvatarClick() {
-    document.querySelector(".popup_type_avatar").classList.add("popup_opened");
-  }
-
-  function handleEditProfileClick() {
-    document.querySelector(".popup_type_profile").classList.add("popup_opened");
-  }
-
-  function handleAddPlaceClick() {
-    document.querySelector(".popup_type_card").classList.add("popup_opened");
-  }
-
+export default function Main(props) {
   return (
     <main>
       <section className="profile">
         <div className="profile__container">
           <div
             className="profile__overlay-container"
-            onClick={handleEditAvatarClick}
+            onClick={props.onEditAvatarClick}
           >
             <img src={image} alt="profile picture" className="profile__image" />
             <div className="profile__overlay"></div>
@@ -31,10 +19,10 @@ export default function Main() {
             <div className="profile__head">
               <h1 className="profile__name">Jacques Cousteau</h1>
               <button
+                onClick={props.onEditProfileClick}
                 type="button"
                 className="profile__edit-button"
                 src="./images/EditButton.png"
-                onClick={handleEditProfileClick}
               ></button>
             </div>
 
@@ -43,15 +31,15 @@ export default function Main() {
         </div>
 
         <button
+          onClick={props.onAddPlaceClick}
           type="button"
           className="profile__add-button"
-          onClick={handleAddPlaceClick}
         ></button>
       </section>
       <section className="elements"></section>
 
       <template id="element">
-        <div className="element">
+        <div className="element" onClick={props.onCardClick}>
           <button type="button" className="element__delete-button"></button>
           <img className="element__image" src=" " alt="" />
           <div className="element__box">
@@ -64,10 +52,14 @@ export default function Main() {
         </div>
       </template>
 
-      <PopupWithForm title="Edit profile" name="profile">
+      <PopupWithForm
+        isOpen={props.isEditProfilePopupOpen}
+        handleCloseClick={props.onClose}
+        title="Edit profile"
+        name="profile"
+      >
         <input
           className="popup__input popup__input_type_name"
-          value=""
           type="text"
           id="name-input"
           name="name"
@@ -78,7 +70,6 @@ export default function Main() {
         <span className="name-input-error popup__input-error"></span>
 
         <input
-          value=""
           className="popup__input popup__input_type_hobby"
           type="text"
           id="hobby-input"
@@ -92,11 +83,15 @@ export default function Main() {
         <input className="popup__button" type="submit" value="Save" />
       </PopupWithForm>
 
-      <PopupWithForm title="New place" name="card">
+      <PopupWithForm
+        isOpen={props.isAddPlacePopupOpen}
+        handleCloseClick={props.onClose}
+        title="New place"
+        name="card"
+      >
         <input
           className="popup__input popup__input_type_title"
           placeholder="Title"
-          value=""
           type="text"
           id="title-input"
           required
@@ -107,7 +102,6 @@ export default function Main() {
         <span className="title-input-error popup__input-error"></span>
 
         <input
-          value=""
           placeholder="Image link"
           className="popup__input popup__input_type_link"
           type="url"
@@ -128,11 +122,15 @@ export default function Main() {
         />
       </PopupWithForm>
 
-      <PopupWithForm title="Change profile picture" name="avatar">
+      <PopupWithForm
+        isOpen={props.isEditAvatarPopupOpen}
+        handleCloseClick={props.onClose}
+        title="Change profile picture"
+        name="avatar"
+      >
         <input
           className="popup__input popup__input_type_url"
           placeholder="profile image link"
-          // value=""
           type="url"
           id="url-input"
           required
@@ -141,7 +139,7 @@ export default function Main() {
         <span className="url-input-error popup__input-error"></span>
         <input className="popup__button" type="submit" value="Save" />
       </PopupWithForm>
-      <ImagePopup />
+      <ImagePopup isOpen={props.isCardPopupOpen} />
     </main>
   );
 }
