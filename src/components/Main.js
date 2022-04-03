@@ -1,14 +1,27 @@
+import image from "../images/image.jpg";
+
 export default function Main() {
+  function handleEditAvatarClick() {
+    document.querySelector(".popup_type_avatar").classList.add("popup_opened");
+  }
+
+  function handleEditProfileClick() {
+    document.querySelector(".popup_type_profile").classList.add("popup_opened");
+  }
+
+  function handleAddPlaceClick() {
+    document.querySelector(".popup_type_card").classList.add("popup_opened");
+  }
+
   return (
     <main>
       <section className="profile">
         <div className="profile__container">
-          <div className="profile__overlay-container">
-            <img
-              src="<%=require('./images/image.jpg')%>"
-              alt="profile picture"
-              className="profile__image"
-            />
+          <div
+            className="profile__overlay-container"
+            onClick={handleEditAvatarClick}
+          >
+            <img src={image} alt="profile picture" className="profile__image" />
             <div className="profile__overlay"></div>
           </div>
 
@@ -19,6 +32,7 @@ export default function Main() {
                 type="button"
                 className="profile__edit-button"
                 src="./images/EditButton.png"
+                onClick={handleEditProfileClick}
               ></button>
             </div>
 
@@ -26,7 +40,11 @@ export default function Main() {
           </div>
         </div>
 
-        <button type="button" className="profile__add-button"></button>
+        <button
+          type="button"
+          className="profile__add-button"
+          onClick={handleAddPlaceClick}
+        ></button>
       </section>
       <section className="elements"></section>
 
@@ -49,7 +67,7 @@ export default function Main() {
           <button type="button" className="popup__close"></button>
           <h3 className="popup__title">Edit profile</h3>
           <form
-            novalidate
+            noValidate
             className="popup__form popup__form_type_profile"
             name="profile"
           >
@@ -61,8 +79,8 @@ export default function Main() {
                 id="name-input"
                 name="name"
                 required
-                minlength="2"
-                maxlength="40"
+                minLength="2"
+                maxLength="40"
               />
               <span className="name-input-error popup__input-error"></span>
 
@@ -73,8 +91,8 @@ export default function Main() {
                 id="hobby-input"
                 name="hobby"
                 required
-                minlength="2"
-                maxlength="200"
+                minLength="2"
+                maxLength="200"
               />
               <span className="hobby-input-error popup__input-error"></span>
 
@@ -89,7 +107,7 @@ export default function Main() {
           <button type="button" className="popup__close"></button>
           <h3 className="popup__title">New place</h3>
           <form
-            novalidate
+            noValidate
             className="popup__form popup__form_type_card"
             name="profile"
           >
@@ -102,8 +120,8 @@ export default function Main() {
                 id="title-input"
                 required
                 name="title"
-                minlength="1"
-                maxlength="30"
+                minLength="1"
+                maxLength="30"
               />
               <span className="title-input-error popup__input-error"></span>
 
@@ -137,7 +155,7 @@ export default function Main() {
           <button type="button" className="popup__close"></button>
           <h3 className="popup__title">Are you sure?</h3>
           <form
-            novalidate
+            noValidate
             className="popup__form popup__form_type_confirm"
             name="profile"
           >
@@ -155,7 +173,7 @@ export default function Main() {
           <button type="button" className="popup__close"></button>
           <h3 className="popup__title">Change profile picture</h3>
           <form
-            novalidate
+            noValidate
             className="popup__form popup__form_type_avatar"
             name="avatar"
           >
@@ -163,7 +181,7 @@ export default function Main() {
               <input
                 className="popup__input popup__input_type_url"
                 placeholder="profile image link"
-                value=""
+                // value=""
                 type="url"
                 id="url-input"
                 required
