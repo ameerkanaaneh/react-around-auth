@@ -1,8 +1,23 @@
-import image from "../images/image.jpg";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
+import React from "react";
+import { api } from "../utils/api";
 
 export default function Main(props) {
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
+  const [userAvatar, setUserAvatar] = React.useState("");
+
+  // componentDidMount?
+  React.useEffect(() => {
+    api.loadUserInfo().then((data) => {
+      const { name, about, avatar } = data;
+      setUserName(name);
+      setUserAvatar(avatar);
+      setUserDescription(about);
+    });
+  });
+
   return (
     <main>
       <section className="profile">
@@ -11,13 +26,17 @@ export default function Main(props) {
             className="profile__overlay-container"
             onClick={props.onEditAvatarClick}
           >
-            <img src={image} alt="profile picture" className="profile__image" />
+            <img
+              src={userAvatar}
+              alt="profile picture"
+              className="profile__image"
+            />
             <div className="profile__overlay"></div>
           </div>
 
           <div className="profile__info">
             <div className="profile__head">
-              <h1 className="profile__name">Jacques Cousteau</h1>
+              <h1 className="profile__name">{userName}</h1>
               <button
                 onClick={props.onEditProfileClick}
                 type="button"
@@ -26,7 +45,7 @@ export default function Main(props) {
               ></button>
             </div>
 
-            <p className="profile__interest">Explorer</p>
+            <p className="profile__interest">{userDescription}</p>
           </div>
         </div>
 
