@@ -9,7 +9,7 @@ export default function ImagePopup(props) {
           className="popup__close"
         ></button>
         <img src={card.link} alt={card.name} className="popup__card-image" />
-        <p className="popup__name">{card.name}</p>
+        <p className="popup__name">{card.namea}</p>
       </div>
     </section>
   );
