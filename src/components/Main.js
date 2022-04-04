@@ -2,21 +2,28 @@ import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
 import { api } from "../utils/api";
+import Card from "./Card.js";
 
 export default function Main(props) {
   const [userName, setUserName] = React.useState("");
   const [userDescription, setUserDescription] = React.useState("");
   const [userAvatar, setUserAvatar] = React.useState("");
+  const [cards, setCards] = React.useState([]);
 
   // componentDidMount?
   React.useEffect(() => {
+    // load user data
     api.loadUserInfo().then((data) => {
       const { name, about, avatar } = data;
       setUserName(name);
       setUserAvatar(avatar);
       setUserDescription(about);
     });
-  });
+    // load cards
+    api.getInitialCards().then((loadedCards) => {
+      setCards([...cards, ...loadedCards]);
+    });
+  }, []);
 
   return (
     <main>
@@ -55,21 +62,11 @@ export default function Main(props) {
           className="profile__add-button"
         ></button>
       </section>
-      <section className="elements"></section>
-
-      <template id="element">
-        <div className="element" onClick={props.onCardClick}>
-          <button type="button" className="element__delete-button"></button>
-          <img className="element__image" src=" " alt="" />
-          <div className="element__box">
-            <h2 className="element__name"></h2>
-            <div className="element__likes-wrapper">
-              <button type="button" className="element__like"></button>
-              <p className="element__count">0</p>
-            </div>
-          </div>
-        </div>
-      </template>
+      <section className="elements">
+        {cards.map((card) => (
+          <Card key={card._id} card={card} onCardClick={props.onCardClick} />
+        ))}
+      </section>
 
       <PopupWithForm
         isOpen={props.isEditProfilePopupOpen}
@@ -158,7 +155,7 @@ export default function Main(props) {
         <span className="url-input-error popup__input-error"></span>
         <input className="popup__button" type="submit" value="Save" />
       </PopupWithForm>
-      <ImagePopup isOpen={props.isCardPopupOpen} />
+      <ImagePopup onClose={props.onClose} card={props.selectedCard} />
     </main>
   );
 }
