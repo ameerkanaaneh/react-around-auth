@@ -4,7 +4,7 @@ export default function Card(props) {
     props.onCardClick(card);
   }
   return (
-    <div key={card._id} className="element">
+    <div className="element">
       <button type="button" className="element__delete-button"></button>
       <img
         className="element__image"

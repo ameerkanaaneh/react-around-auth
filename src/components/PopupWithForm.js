@@ -17,11 +17,17 @@ export default function PopupWithForm(props) {
         ></button>
         <h3 className="popup__title">{props.title}</h3>
         <form
-          noValidate
           className={`popup__form popup__form_type_${props.name}`}
           name={props.name}
         >
-          <fieldset className="popup__fields">{props.children}</fieldset>
+          <fieldset className="popup__fields">
+            {props.children}
+            <input
+              className="popup__button"
+              type="submit"
+              value={props.buttonText}
+            />
+          </fieldset>
         </form>
       </div>
     </section>
