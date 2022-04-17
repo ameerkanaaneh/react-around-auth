@@ -1,4 +1,4 @@
-class API {
+class Api {
   constructor({ baseUrl, headers }) {
     this.url = baseUrl;
     this.headers = headers;
@@ -103,7 +103,7 @@ class API {
   }
 }
 
-const api = new API({
+const api = new Api({
   baseUrl: "https://around.nomoreparties.co/v1/group-12",
   headers: {
     authorization: "82cfb778-0110-4074-beef-5e31af26dd47",
