@@ -109,5 +109,4 @@ const api = new API({
     authorization: "82cfb778-0110-4074-beef-5e31af26dd47",
   },
 });
-
 export default api;

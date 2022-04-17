@@ -1,4 +1,4 @@
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 import React from "react";
 
 export default function Card(props) {
