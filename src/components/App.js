@@ -9,6 +9,7 @@ import ImagePopup from "./ImagePopup.js";
 import { api } from "../utils/api.js";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup.js";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -55,6 +56,13 @@ function App() {
 
   function handleUpdateUser({ name, about }) {
     api.editProfileData(name, about).then((user) => {
+      setCurrentUser(user);
+      closeAllPopups();
+    });
+  }
+
+  function handleUpdateAvatar({ avatar }) {
+    api.changeProfileAvatar(avatar).then((user) => {
       setCurrentUser(user);
       closeAllPopups();
     });
@@ -119,23 +127,11 @@ function App() {
             />
           </PopupWithForm>
 
-          <PopupWithForm
+          <EditAvatarPopup
+            onUpdateAvatar={handleUpdateAvatar}
             isOpen={isEditAvatarPopupOpen}
-            handleCloseClick={closeAllPopups}
-            title="Change profile picture"
-            name="avatar"
-            buttonText="Save"
-          >
-            <input
-              className="popup__input popup__input_type_url"
-              placeholder="profile image link"
-              type="url"
-              id="url-input"
-              required
-              name="url"
-            />
-            <span className="url-input-error popup__input-error"></span>
-          </PopupWithForm>
+            onClose={closeAllPopups}
+          />
           <ImagePopup onClose={closeAllPopups} card={selectedCard} />
         </Main>
         <Footer />
