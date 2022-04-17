@@ -30,6 +30,7 @@
 @import url("./blocks/element/__delete-button/element__delete-button.css");
 @import url("./blocks/element/__likes-wrapper/element__likes-wrapper.css");
 @import url("./blocks/element/__count/element__count.css");
+@import url("./blocks/element/__delete-button/element__delete-button_visible.css");
 
 /* footer styles */
 @import url("./blocks/footer/footer.css");

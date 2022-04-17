@@ -1,25 +1,15 @@
 import React from "react";
 import { api } from "../utils/api";
 import Card from "./Card.js";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 export default function Main(props) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
+  const currentUser = React.useContext(CurrentUserContext);
+  const { name, about, avatar } = currentUser;
 
   // componentDidMount?
   React.useEffect(() => {
-    // load user data
-    api
-      .loadUserInfo()
-      .then((data) => {
-        const { name, about, avatar } = data;
-        setUserName(name);
-        setUserAvatar(avatar);
-        setUserDescription(about);
-      })
-      .catch((err) => console.log(err));
     // load cards
     api
       .getInitialCards()
@@ -38,7 +28,7 @@ export default function Main(props) {
             onClick={props.onEditAvatarClick}
           >
             <img
-              src={userAvatar}
+              src={avatar}
               alt="profile picture"
               className="profile__image"
             />
@@ -47,7 +37,7 @@ export default function Main(props) {
 
           <div className="profile__info">
             <div className="profile__head">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{name}</h1>
               <button
                 onClick={props.onEditProfileClick}
                 type="button"
@@ -56,7 +46,7 @@ export default function Main(props) {
               ></button>
             </div>
 
-            <p className="profile__interest">{userDescription}</p>
+            <p className="profile__interest">{about}</p>
           </div>
         </div>
 
