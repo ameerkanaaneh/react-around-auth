@@ -4,9 +4,9 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 export default function EditProfilePopup(props) {
   const { isOpen, onClose } = props;
+  const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
     setName(currentUser.name);
@@ -38,7 +38,7 @@ export default function EditProfilePopup(props) {
     >
       <input
         className="popup__input popup__input_type_name"
-        value={name}
+        value={name || ""}
         onChange={handleNameInputChange}
         type="text"
         id="name-input"
@@ -51,7 +51,7 @@ export default function EditProfilePopup(props) {
 
       <input
         className="popup__input popup__input_type_hobby"
-        value={description}
+        value={description || ""}
         onChange={handleDescriptionInputChange}
         type="text"
         id="hobby-input"
