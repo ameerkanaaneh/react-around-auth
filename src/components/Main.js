@@ -8,6 +8,37 @@ export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const { name, about, avatar } = currentUser;
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+    isLiked
+      ? api
+          .unlikeCard(card._id)
+          .then((newCard) =>
+            setCards((state) =>
+              state.map((currentCard) =>
+                currentCard._id === card._id ? newCard : currentCard
+              )
+            )
+          )
+      : api
+          .likeCard(card._id)
+          .then((newCard) =>
+            setCards((state) =>
+              state.map((currentCard) =>
+                currentCard._id === card._id ? newCard : currentCard
+              )
+            )
+          );
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then(() => {
+      setCards((state) =>
+        state.filter((currentCard) => currentCard._id !== card._id)
+      );
+    });
+  }
+
   // componentDidMount?
   React.useEffect(() => {
     // load cards
@@ -58,7 +89,13 @@ export default function Main(props) {
       </section>
       <section className="elements">
         {cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={props.onCardClick} />
+          <Card
+            key={card._id}
+            card={card}
+            onCardClick={props.onCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
         ))}
       </section>
       {props.children}
