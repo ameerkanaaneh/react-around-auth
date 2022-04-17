@@ -8,6 +8,7 @@ import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import { api } from "../utils/api.js";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -52,6 +53,13 @@ function App() {
     setSelectedCard({ name: "", link: "" });
   }
 
+  function handleUpdateUser({ name, about }) {
+    api.editProfileData(name, about).then((user) => {
+      setCurrentUser(user);
+      closeAllPopups();
+    });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -62,35 +70,11 @@ function App() {
           onAddPlaceClick={handleAddPlaceClick}
           onCardClick={handleCardClick}
         >
-          <PopupWithForm
+          <EditProfilePopup
+            onUpdateUser={handleUpdateUser}
             isOpen={isEditProfilePopupOpen}
-            handleCloseClick={closeAllPopups}
-            title="Edit profile"
-            name="profile"
-            buttonText="Save"
-          >
-            <input
-              className="popup__input popup__input_type_name"
-              type="text"
-              id="name-input"
-              name="name"
-              required
-              minLength="2"
-              maxLength="40"
-            />
-            <span className="name-input-error popup__input-error"></span>
-
-            <input
-              className="popup__input popup__input_type_hobby"
-              type="text"
-              id="hobby-input"
-              name="hobby"
-              required
-              minLength="2"
-              maxLength="200"
-            />
-            <span className="hobby-input-error popup__input-error"></span>
-          </PopupWithForm>
+            onClose={closeAllPopups}
+          />
 
           <PopupWithForm
             isOpen={isAddPlacePopupOpen}
