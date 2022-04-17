@@ -1,4 +1,4 @@
-export default class API {
+class API {
   constructor({ baseUrl, headers }) {
     this.url = baseUrl;
     this.headers = headers;
@@ -103,9 +103,11 @@ export default class API {
   }
 }
 
-export const api = new API({
+const api = new API({
   baseUrl: "https://around.nomoreparties.co/v1/group-12",
   headers: {
     authorization: "82cfb778-0110-4074-beef-5e31af26dd47",
   },
 });
+
+export default api;
