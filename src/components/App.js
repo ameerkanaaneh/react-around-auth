@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  BrowserRouter,
+  Navigate,
+  useNavigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 import "../index.css";
 import Header from "./Header.js";
@@ -11,6 +18,10 @@ import CurrentUserContext from "./../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Register from "./Register.js";
+import Login from "./Login.js";
+import ProtectedRoute from "./ProtectedRoute.js";
+import * as auth from "../utils/auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -23,12 +34,25 @@ function App() {
     link: "",
   });
 
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  const [data, setData] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  function handleLogin(e) {
+    e.preventDefault();
+    setIsLoggedIn(true);
+  }
 
   // componentDidMount?
   React.useEffect(() => {
     // load cards
+    tokenCheck();
     api
       .getInitialCards()
       .then((loadedCards) => {
@@ -43,6 +67,23 @@ function App() {
       .then((data) => setCurrentUser(data))
       .catch((err) => console.log(err));
   }, []);
+
+  function tokenCheck() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      auth
+        .getContent(token)
+        .then((res) => {
+          if (res) {
+            setData({ ...data, email: res.data.email });
+            setIsLoggedIn(true);
+          }
+        })
+        .then(() => {
+          navigate("/");
+        });
+    }
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -135,51 +176,83 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header />
-        <Main
-          onEditAvatarClick={handleEditAvatarClick}
-          onEditProfileClick={handleEditProfileClick}
-          onAddPlaceClick={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        >
-          <EditProfilePopup
-            onUpdateUser={handleUpdateUser}
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-          />
+      <Routes>
+        <Route
+          path="signup"
+          element={
+            <div className="page">
+              <Header page="signin" />
+              <Register data={data} setData={setData} />
+            </div>
+          }
+        />
+        <Route
+          path="signin"
+          element={
+            <div className="page">
+              <Header page="signup" />
+              <Login handleLogin={handleLogin} />
+            </div>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute path="/" loggedIn={isLoggedIn}>
+              <div className="page">
+                <Header email={data.email} />
+                <Main
+                  onEditAvatarClick={handleEditAvatarClick}
+                  onEditProfileClick={handleEditProfileClick}
+                  onAddPlaceClick={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                >
+                  <EditProfilePopup
+                    onUpdateUser={handleUpdateUser}
+                    isOpen={isEditProfilePopupOpen}
+                    onClose={closeAllPopups}
+                  />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlaceSubmit={handleAddPlaceSubmit}
-          />
+                  <AddPlacePopup
+                    isOpen={isAddPlacePopupOpen}
+                    onClose={closeAllPopups}
+                    onAddPlaceSubmit={handleAddPlaceSubmit}
+                  />
 
-          <PopupWithForm
-            title="Are you sure?"
-            name="confirm"
-            modifier="confirm"
-            buttonText="Save"
-          >
-            <input
-              className="popup__button popup__button_confirm"
-              type="submit"
-              value="Yes"
-            />
-          </PopupWithForm>
+                  <PopupWithForm
+                    title="Are you sure?"
+                    name="confirm"
+                    modifier="confirm"
+                    buttonText="Save"
+                  >
+                    <input
+                      className="popup__button popup__button_confirm"
+                      type="submit"
+                      value="Yes"
+                    />
+                  </PopupWithForm>
 
-          <EditAvatarPopup
-            onUpdateAvatar={handleUpdateAvatar}
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-          />
-          <ImagePopup onClose={closeAllPopups} card={selectedCard} />
-        </Main>
-        <Footer />
-      </div>
+                  <EditAvatarPopup
+                    onUpdateAvatar={handleUpdateAvatar}
+                    isOpen={isEditAvatarPopupOpen}
+                    onClose={closeAllPopups}
+                  />
+                  <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+                </Main>
+                <Footer />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="*"
+          element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/signin" />}
+        />
+      </Routes>
     </CurrentUserContext.Provider>
   );
 }
