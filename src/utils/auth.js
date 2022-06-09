@@ -10,8 +10,10 @@ export const register = (email, password) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      if (data.error) {
-        throw new Error(data.error);
+      if (!data.messgae) {
+        return data;
+      } else {
+        return;
       }
     });
 };
@@ -27,7 +29,6 @@ export const authorize = (email, password) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.token) {
         localStorage.setItem("token", data.token);
         return data;

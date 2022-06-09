@@ -4,10 +4,7 @@ import * as auth from "../utils/auth";
 
 export default function Login(props) {
   const navigate = useNavigate();
-  const [data, setData] = React.useState({
-    password: "",
-    email: "",
-  });
+  const { data, setData } = props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -28,16 +25,17 @@ export default function Login(props) {
       })
       .then(() => {
         props.handleLogin(e);
+
         navigate("/");
       })
       .catch((err) => console.log(err));
   }
   return (
-    <section className="login">
-      <h2 className="login__header">Log in</h2>
-      <form onSubmit={handleSubmit} className="login__form">
+    <section className="entry">
+      <h2 className="entry__header">Log in</h2>
+      <form onSubmit={handleSubmit} className="entry__form">
         <input
-          className="login__input"
+          className="entry__input"
           name="email"
           onChange={handleChange}
           value={data.email}
@@ -45,18 +43,18 @@ export default function Login(props) {
           placeholder="Email"
         ></input>
         <input
-          className="login__input"
+          className="entry__input"
           name="password"
           onChange={handleChange}
           value={data.password}
           type="password"
           placeholder="Password"
         ></input>
-        <button className="login__submit" type="submit">
+        <button className="entry__submit" type="submit">
           Log in
         </button>
       </form>
-      <Link className="login__link" to="/signup">
+      <Link className="entry__link" to="/signup">
         Not a member yet? Sign up here!
       </Link>
     </section>

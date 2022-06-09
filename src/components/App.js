@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  useNavigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, useNavigate, Route, Routes } from "react-router-dom";
 
 import "../index.css";
 import Header from "./Header.js";
@@ -29,6 +23,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
+    React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({
     name: "",
     link: "",
@@ -48,11 +44,13 @@ function App() {
     e.preventDefault();
     setIsLoggedIn(true);
   }
+  React.useEffect(() => {
+    tokenCheck();
+  }, [data.email]);
 
   // componentDidMount?
   React.useEffect(() => {
     // load cards
-    tokenCheck();
     api
       .getInitialCards()
       .then((loadedCards) => {
@@ -105,6 +103,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
     setSelectedCard({ name: "", link: "" });
   }
 
@@ -180,18 +179,24 @@ function App() {
         <Route
           path="signup"
           element={
-            <div className="page">
+            <div className="pageEntry">
               <Header page="signin" />
-              <Register data={data} setData={setData} />
+              <Register
+                onClose={closeAllPopups}
+                state={isInfoTooltipPopupOpen}
+                setState={setIsInfoTooltipPopupOpen}
+                data={data}
+                setData={setData}
+              />
             </div>
           }
         />
         <Route
           path="signin"
           element={
-            <div className="page">
+            <div className="pageEntry">
               <Header page="signup" />
-              <Login handleLogin={handleLogin} />
+              <Login data={data} setData={setData} handleLogin={handleLogin} />
             </div>
           }
         />

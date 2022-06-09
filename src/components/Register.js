@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import InfoTootip from "./InfoTooltip";
+import success from "../images/Union.svg";
+import fail from "../images/UnionFail.svg";
 import * as auth from "../utils/auth";
 
 export default function Register(props) {
   const navigate = useNavigate();
-  const { data, setData } = props;
+  const { data, setData, setState, state, onClose } = props;
+  const [imageUrl, setImageUrl] = React.useState("");
+  const [message, setMessage] = React.useState("");
+
+  function handleClose() {
+    onClose();
+    navigate("/signin");
+  }
+
   const handleSubmit = function (e) {
     e.preventDefault();
     auth
       .register(data.email, data.password)
       .then((res) => {
-        navigate("/signin");
+        if (!res.data) {
+          setImageUrl(fail);
+          setMessage("Oops, something went wrong! Please try again.");
+          setState(true);
+        } else {
+          setImageUrl(success);
+          setMessage("Success! You have now been registered.");
+          setState(true);
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChange = function (e) {
@@ -20,11 +41,11 @@ export default function Register(props) {
     setData({ ...data, [name]: value });
   };
   return (
-    <section className="register">
-      <h2 className="register__header">Sign up</h2>
-      <form onSubmit={handleSubmit} className="register__form">
+    <section className="entry">
+      <h2 className="entry__header">Sign up</h2>
+      <form onSubmit={handleSubmit} className="entry__form">
         <input
-          className="register__input"
+          className="entry__input"
           name="email"
           type="email"
           placeholder="Email"
@@ -32,20 +53,26 @@ export default function Register(props) {
           onChange={handleChange}
         ></input>
         <input
-          className="register__input"
+          className="entry__input"
           name="password"
           placeholder="Password"
           value={data.password}
           type="password"
           onChange={handleChange}
         ></input>
-        <button className="register__submit" type="submit">
+        <button className="entry__submit" type="submit">
           Sign up
         </button>
       </form>
-      <Link className="register__link" to="/signin">
+      <Link className="entry__link" to="/signin">
         Already a member? Log in here!
       </Link>
+      <InfoTootip
+        onClose={handleClose}
+        isOpen={state}
+        imageUrl={imageUrl}
+        message={message}
+      />
     </section>
   );
 }
