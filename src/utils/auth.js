@@ -35,8 +35,7 @@ export const authorize = (email, password) => {
       } else {
         return;
       }
-    })
-    .catch((err) => console.log(err));
+    });
 };
 
 // sending a request to the authorization route

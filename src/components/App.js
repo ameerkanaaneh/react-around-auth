@@ -15,6 +15,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute.js";
+import InfoTootip from "./InfoTooltip";
 import * as auth from "../utils/auth";
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
     name: "",
     link: "",
   });
+  const [isRegistered, setIsRegistered] = React.useState(false);
+  const [imageUrl, setImageUrl] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = React.useState({});
@@ -46,7 +50,7 @@ function App() {
   }
   React.useEffect(() => {
     tokenCheck();
-  }, [data.email]);
+  }, [data.email, tokenCheck]);
 
   // componentDidMount?
   React.useEffect(() => {
@@ -175,6 +179,19 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <InfoTootip
+        onClose={() => {
+          closeAllPopups();
+          if (isRegistered) {
+            setData({ password: "", email: "" });
+            navigate("/signin");
+            setIsRegistered(false);
+          }
+        }}
+        isOpen={isInfoTooltipPopupOpen}
+        imageUrl={imageUrl}
+        message={message}
+      />
       <Routes>
         <Route
           path="signup"
@@ -182,8 +199,9 @@ function App() {
             <div className="pageEntry">
               <Header page="signin" />
               <Register
-                onClose={closeAllPopups}
-                state={isInfoTooltipPopupOpen}
+                setIsRegistered={setIsRegistered}
+                setImageUrl={setImageUrl}
+                setMessage={setMessage}
                 setState={setIsInfoTooltipPopupOpen}
                 data={data}
                 setData={setData}
@@ -196,7 +214,15 @@ function App() {
           element={
             <div className="pageEntry">
               <Header page="signup" />
-              <Login data={data} setData={setData} handleLogin={handleLogin} />
+              <Login
+                state={isInfoTooltipPopupOpen}
+                setImageUrl={setImageUrl}
+                setMessage={setMessage}
+                setState={setIsInfoTooltipPopupOpen}
+                data={data}
+                setData={setData}
+                handleLogin={handleLogin}
+              />
             </div>
           }
         />

@@ -1,20 +1,12 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import InfoTootip from "./InfoTooltip";
+import React from "react";
+import { Link } from "react-router-dom";
 import success from "../images/Union.svg";
 import fail from "../images/UnionFail.svg";
 import * as auth from "../utils/auth";
 
 export default function Register(props) {
-  const navigate = useNavigate();
-  const { data, setData, setState, state, onClose } = props;
-  const [imageUrl, setImageUrl] = React.useState("");
-  const [message, setMessage] = React.useState("");
-
-  function handleClose() {
-    onClose();
-    navigate("/signin");
-  }
+  const { data, setData, setState, setMessage, setImageUrl, setIsRegistered } =
+    props;
 
   const handleSubmit = function (e) {
     e.preventDefault();
@@ -28,6 +20,7 @@ export default function Register(props) {
         } else {
           setImageUrl(success);
           setMessage("Success! You have now been registered.");
+          setIsRegistered(true);
           setState(true);
         }
       })
@@ -51,6 +44,7 @@ export default function Register(props) {
           placeholder="Email"
           value={data.email}
           onChange={handleChange}
+          required
         ></input>
         <input
           className="entry__input"
@@ -59,6 +53,7 @@ export default function Register(props) {
           value={data.password}
           type="password"
           onChange={handleChange}
+          required
         ></input>
         <button className="entry__submit" type="submit">
           Sign up
@@ -67,12 +62,6 @@ export default function Register(props) {
       <Link className="entry__link" to="/signin">
         Already a member? Log in here!
       </Link>
-      <InfoTootip
-        onClose={handleClose}
-        isOpen={state}
-        imageUrl={imageUrl}
-        message={message}
-      />
     </section>
   );
 }

@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import fail from "../images/UnionFail.svg";
 import * as auth from "../utils/auth";
 
 export default function Login(props) {
   const navigate = useNavigate();
-  const { data, setData } = props;
+  const { data, setData, setImageUrl, setMessage, setState, state } = props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -19,14 +20,23 @@ export default function Login(props) {
     auth
       .authorize(data.email, data.password)
       .then((data) => {
-        if (data.token) {
-          setData({ ...data, email: "", password: "" });
+        if (data) {
+          if (data.token) {
+            setData({ ...data, email: "", password: "" });
+            setState(false);
+          }
+        } else {
+          setImageUrl(fail);
+          setMessage("Oops, something went wrong! Please try again.");
+          setState(true);
         }
       })
       .then(() => {
         props.handleLogin(e);
 
-        navigate("/");
+        if (state) {
+          navigate("/");
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -41,6 +51,7 @@ export default function Login(props) {
           value={data.email}
           type="email"
           placeholder="Email"
+          required
         ></input>
         <input
           className="entry__input"
@@ -49,6 +60,7 @@ export default function Login(props) {
           value={data.password}
           type="password"
           placeholder="Password"
+          required
         ></input>
         <button className="entry__submit" type="submit">
           Log in
