@@ -1,6 +1,6 @@
 # Project Link:
 
-[around-react-project-link](https://ameerkanaaneh.github.io/around-react/)
+[around-auth-project-link](https://ameerkanaaneh.github.io/react-around-auth/)
 
 # Getting Started with Create React App
 
