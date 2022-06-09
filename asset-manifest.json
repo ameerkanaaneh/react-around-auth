@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/around-react/static/css/main.b4c14bc2.css",
+    "main.js": "/around-react/static/js/main.7bfa27c7.js",
+    "static/media/inter-v7-latin-500.woff2": "/around-react/static/media/inter-v7-latin-500.09888c3a03b6e6c64e6d.woff2",
+    "static/media/inter-v7-latin-900.woff2": "/around-react/static/media/inter-v7-latin-900.5d23976445913ae8e5b1.woff2",
+    "static/media/inter-v7-latin-regular.woff2": "/around-react/static/media/inter-v7-latin-regular.5e6a773da9d1377fc690.woff2",
+    "static/media/Vector(1).svg": "/around-react/static/media/Vector(1).c75819857ff1599f0c50e9fc06373cd9.svg",
+    "static/media/Vector.svg": "/around-react/static/media/Vector.99043841e8bec6b9df21.svg",
+    "static/media/TrashButton.svg": "/around-react/static/media/TrashButton.ba43124316072f7a8629.svg",
+    "static/media/UnionFail.svg": "/around-react/static/media/UnionFail.df8eddf661ff88f2d0efd3d570d14309.svg",
+    "static/media/Union.svg": "/around-react/static/media/Union.1b6082f862eac35e2514460237d96ecc.svg",
+    "index.html": "/around-react/index.html",
+    "static/media/blackHeart.svg": "/around-react/static/media/blackHeart.f8482d28867cec189b08.svg",
+    "static/media/Vectoredit-icon.svg": "/around-react/static/media/Vectoredit-icon.ae1a976ddb506239e9f0.svg",
+    "static/media/Vector(2).svg": "/around-react/static/media/Vector(2).bed8c136e13907f5eefb.svg",
+    "main.b4c14bc2.css.map": "/around-react/static/css/main.b4c14bc2.css.map",
+    "main.7bfa27c7.js.map": "/around-react/static/js/main.7bfa27c7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b4c14bc2.css",
+    "static/js/main.7bfa27c7.js"
+  ]
+}
