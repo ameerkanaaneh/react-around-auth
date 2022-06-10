@@ -8,7 +8,11 @@ export const register = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res) {
+        return res.json();
+      }
+    })
     .then((data) => {
       if (!data.messgae) {
         return data;
@@ -27,7 +31,11 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res) {
+        return res.json();
+      }
+    })
     .then((data) => {
       if (data.token) {
         localStorage.setItem("token", data.token);
@@ -39,7 +47,7 @@ export const authorize = (email, password) => {
 };
 
 // sending a request to the authorization route
-export const getContent = (token) =>
+export const checkToken = (token) =>
   fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
@@ -47,5 +55,9 @@ export const getContent = (token) =>
       authorization: `Bearer ${token}`,
     },
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res) {
+        return res.json();
+      }
+    })
     .then((data) => data);

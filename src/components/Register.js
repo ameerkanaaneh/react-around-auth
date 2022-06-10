@@ -8,6 +8,10 @@ export default function Register(props) {
   const { data, setData, setState, setMessage, setImageUrl, setIsRegistered } =
     props;
 
+  React.useEffect(() => {
+    setData({ ...data, email: "", password: "" });
+  }, []);
+
   const handleSubmit = function (e) {
     e.preventDefault();
     auth
@@ -26,6 +30,8 @@ export default function Register(props) {
       })
       .catch((err) => {
         console.log(err);
+        setImageUrl(fail);
+        setMessage("Oops, something went wrong! Please try again.");
       });
   };
 

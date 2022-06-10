@@ -4,6 +4,8 @@ export default function Header(props) {
   const navigate = useNavigate();
   function handleLogout() {
     localStorage.removeItem("token");
+    props.setIsLoggedIn(false);
+    props.setData({ email: "", password: "" });
     navigate("/signin");
   }
   return (

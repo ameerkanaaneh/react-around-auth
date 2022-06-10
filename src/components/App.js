@@ -50,7 +50,7 @@ function App() {
   }
   React.useEffect(() => {
     tokenCheck();
-  }, [data.email, tokenCheck]);
+  }, []);
 
   // componentDidMount?
   React.useEffect(() => {
@@ -74,7 +74,7 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       auth
-        .getContent(token)
+        .checkToken(token)
         .then((res) => {
           if (res) {
             setData({ ...data, email: res.data.email });
@@ -83,7 +83,8 @@ function App() {
         })
         .then(() => {
           navigate("/");
-        });
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -221,6 +222,7 @@ function App() {
                 setState={setIsInfoTooltipPopupOpen}
                 data={data}
                 setData={setData}
+                isLoggedIn={isLoggedIn}
                 handleLogin={handleLogin}
               />
             </div>
@@ -231,7 +233,11 @@ function App() {
           element={
             <ProtectedRoute path="/" loggedIn={isLoggedIn}>
               <div className="page">
-                <Header email={data.email} />
+                <Header
+                  setData={setData}
+                  setIsLoggedIn={setIsLoggedIn}
+                  email={data.email}
+                />
                 <Main
                   onEditAvatarClick={handleEditAvatarClick}
                   onEditProfileClick={handleEditProfileClick}
@@ -258,13 +264,7 @@ function App() {
                     name="confirm"
                     modifier="confirm"
                     buttonText="Save"
-                  >
-                    <input
-                      className="popup__button popup__button_confirm"
-                      type="submit"
-                      value="Yes"
-                    />
-                  </PopupWithForm>
+                  ></PopupWithForm>
 
                   <EditAvatarPopup
                     onUpdateAvatar={handleUpdateAvatar}

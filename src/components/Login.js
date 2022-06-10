@@ -5,7 +5,20 @@ import * as auth from "../utils/auth";
 
 export default function Login(props) {
   const navigate = useNavigate();
-  const { data, setData, setImageUrl, setMessage, setState, state } = props;
+  const {
+    data,
+    state,
+    setData,
+    isLoggedIn,
+    setImageUrl,
+    setMessage,
+    setState,
+    handleLogin,
+  } = props;
+
+  React.useEffect(() => {
+    setData({ ...data, email: "", password: "" });
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -22,8 +35,8 @@ export default function Login(props) {
       .then((data) => {
         if (data) {
           if (data.token) {
-            setData({ ...data, email: "", password: "" });
             setState(false);
+            return;
           }
         } else {
           setImageUrl(fail);
@@ -32,13 +45,12 @@ export default function Login(props) {
         }
       })
       .then(() => {
-        props.handleLogin(e);
-
-        if (state) {
-          navigate("/");
-        }
+        if (!state) handleLogin(e);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        if (isLoggedIn) navigate("/");
+      });
   }
   return (
     <section className="entry">
